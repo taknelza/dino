@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <style>
+            canvas {
+                border: 1px solid black;
+                background-color: #87CEEB;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" witdh="800" height="600"></canvas>
+        <script>
+            const canvas=document.getElementById('canvas');
+            const ctx=canvas.getContext('2d');
+            let drops=[];
+            function createDrop() {
+                drops.push({
+                    x: Math.random() * canvas.width,
+                    y: 0,
+                    radius: Math.random() * 5+2,
+                    speed:Math.random() * 2+2,
+                });
+            }
+            function updateDrops() {
+                for (let i=drops.length-1; i>=0; i--) {
+                    drops[i].y+=drops[i].speed;
+                    if (drops[i].y > canvas.height) {
+                        drops.splice(i, 1);
+                    }
+                }
+            }
+            function drawDrops() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drops.forEach(drop => {
+                    ctx.beginPath();
+                    ctx.arc(drop.x, drop.y, drop.radius, 0, Math.PI * 2);
+                    ctx.fillStyle='blue';
+                    ctx.fill();
+                    ctx.closePath();
+                });
+            }
+            function animate() {
+                createDrop();
+                updateDrops();
+                drawDrops();
+                requestAnimationFrame(animate);
+            }   animate();
+        </script>
+    </body>
+</html>
